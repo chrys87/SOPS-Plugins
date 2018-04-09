@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # translate the current clipboard with translate-shell
 # parameters: <language> <Replace Clipboard [True,False]>
@@ -52,7 +52,7 @@ def displayClipboardTranslation(language, toClipboard):
 
     if (ClipboardText != None):
         ClipboardText = raw_string(ClipboardText)		
-        TranslationText = os.popen('translate-shell -b :'+ language +' "'+ ClipboardText +'"').read()
+        TranslationText = os.popen('trans -b :'+ language +' "'+ ClipboardText +'"').read()
         TranslationText = TranslationText[:-1]
         if TranslationText in '/bin/sh: translate-shell: ':
             Message = "Please install translate-shell translate-shell" # install translate-shell
