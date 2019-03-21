@@ -42,6 +42,7 @@ def raw_string(text):
 def setTextToClipboard(text):
     ClipboardObj = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
     ClipboardObj.set_text(text, -1)
+    ClipboardObj.store() 
 
 def displayClipboardTranslation(language, toClipboard):
     Message = ""
@@ -54,7 +55,7 @@ def displayClipboardTranslation(language, toClipboard):
         ClipboardText = raw_string(ClipboardText)		
         TranslationText = os.popen('trans -b :'+ language +' "'+ ClipboardText +'"').read()
         TranslationText = TranslationText[:-1]
-        if TranslationText in '/bin/sh: translate-shell: ':
+        if TranslationText in '/bin/sh: trans: ':
             Message = "Please install translate-shell translate-shell" # install translate-shell
         else:
             TranslationText = ClipboardText = raw_string(TranslationText)		
