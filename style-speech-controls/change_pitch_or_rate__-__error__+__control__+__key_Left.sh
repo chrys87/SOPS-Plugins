@@ -21,6 +21,10 @@
 # 02110-1301, USA.
 #
 
+export TEXTDOMAIN=change-mode
+export TEXTDOMAINDIR=/usr/share/locale
+. gettext.sh
+
 [ -f /tmp/orca-ratechanger ] && contents=$(cat /tmp/orca-ratechanger) || contents="rate"
 case "$contents" in
     volume)
@@ -34,5 +38,7 @@ case "$contents" in
 	;;
     esac
 echo -n "$contents" > /tmp/orca-ratechanger
-echo "Now changing $contents."
+
+# display information
+echo $(gettext "Now changing $contents.")
 exit 0
