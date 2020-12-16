@@ -13,6 +13,8 @@ import orca.settings
 
 def outputMessage(Message):
 	if (orca.settings.enableSpeech):
+		speechserver = orca.speech._speechserver
+		speechserver._cancel()
 		orca.speech.speak(Message)
 	if (orca.settings.enableBraille):
 		orca.braille.displayMessage(Message)
