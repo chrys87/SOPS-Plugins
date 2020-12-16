@@ -1,0 +1,54 @@
+import select, socket, os, os.path
+from threading import Thread
+
+# Orca
+import orca.braille
+import orca.orca
+import orca.speech
+import orca.settings
+
+def outputMessage(Message):
+	if (orca.settings.enableSpeech):
+		orca.speech.speak(Message)
+	if (orca.settings.enableBraille):
+		orca.braille.displayMessage(Message)
+
+def voiceWatchDog():
+    socketFile = '/tmp/orca-' + str(os.getppid()) + '.sock'
+    if os.path.exists(socketFile):
+        os.unlink(socketFile)
+    orcaSock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    orcaSock.bind(socketFile)
+    os.chmod(socketFile, 0o222)
+    orcaSock.listen(1)
+    while True:
+        # Check if the client is still connected and if data is available:
+        try:
+            r, _, _ = select.select([orcaSock], [], [], 0.8)
+        except select.error:
+            break
+        if r == []:
+            continue
+        if orcaSock in r:
+            client_sock, client_addr = orcaSock.accept()
+        try:
+            rawdata = client_sock.recv(8129)
+        except:
+            pass
+        try:
+            data = rawdata.decode("utf-8").rstrip().lstrip()
+            outputMessage(data)
+        except:
+            pass
+        try:
+            client_sock.close()
+        except:
+            pass
+    if orcaSock:
+        orcaSock.close()
+        orcaSock = None
+    if os.path.exists(socketFile):
+        os.unlink(socketFile)
+
+t = Thread(target=voiceWatchDog)
+t.start()
