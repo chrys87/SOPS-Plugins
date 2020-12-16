@@ -1,3 +1,7 @@
+# Example usage:
+# echo "This is a test." | socat - UNIX-CLIENT:/tmp/orca-PID.sock
+# Where PID is orca's process id.
+
 import select, socket, os, os.path
 from threading import Thread
 
