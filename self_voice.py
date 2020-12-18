@@ -1,6 +1,7 @@
 # Example usage:
 # echo "This is a test." | socat - UNIX-CLIENT:/tmp/orca-PID.sock
 # Where PID is orca's process id.
+# Prepend text to be spoken with <!#APPEND#!> to make it not interrupt, for inaccessible windows.
 
 import select, socket, os, os.path
 from threading import Thread
