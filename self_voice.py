@@ -11,23 +11,23 @@ import orca.orca
 import orca.speech
 import orca.settings
 
-APPEND_CODE = '<!#APPEND#!>'
+APPEND_CODE = '<#APPEND#>'
 
 def outputMessage(Message):
-	# Prepare
-	append = Message.startswith(APPEND_CODE)
-	if append:
-		Message = Message[len(APPEND_CODE):]
-	# Speak
-	if (orca.settings.enableSpeech):
-		if not append:
-			speechserver = orca.speech._speechserver
-			speechserver._cancel()
-		if Message != '':
-			orca.speech.speak(Message)
-	# Braille
-	if (orca.settings.enableBraille):
-		orca.braille.displayMessage(Message)
+    # Prepare
+    append = Message.startswith(APPEND_CODE)
+    if append:
+        Message = Message[len(APPEND_CODE):]
+    # Speak
+    if (orca.settings.enableSpeech):
+        if not append:
+            speechserver = orca.speech._speechserver
+            speechserver._cancel()
+        if Message != '':
+            orca.speech.speak(Message)
+    # Braille
+    if (orca.settings.enableBraille):
+        orca.braille.displayMessage(Message)
 
 def voiceWatchDog():
     socketFile = '/tmp/orca-' + str(os.getppid()) + '.sock'
